@@ -1,0 +1,241 @@
+---
+title: "Data analysis with R for Lao PDR fourth National Forest Inventory cycle"
+subtitle: "Training report for carbon stock calculations"  
+format:
+  pdf:
+    documentclass: scrartcl
+    papersize: A4
+    toc: true
+    number-sections: true
+    number-depth: 2
+    colorlinks: true
+    #fontfamily: libertinus
+  html: 
+    embed-resources: true
+    number-sections: true
+    toc: true
+    toc-depth: 2
+    toc-location: left
+  docx:
+    number-sections: true
+    toc: true
+    toc-depth: 2
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| output: false
+
+source("R/03-play-tree.R", local = TRUE)
+source("R/03-play-spatial.R", local = TRUE)
+source("R/04-calc-tree-agb-corr.R", local = TRUE)
+source("R/05-aggregate-carbon-corr.R", local = TRUE)
+
+```
+
+# Background {.unnumbered}
+
+## Context {.unnumbered}
+
+Carbon accounting for REDD+ refers to the calculations of greenhouse gas emissions and removals from the forestry sector to assess the contribution of Deforestation, Forest Degradation and conservation or enhancement of forest carbon stocks to climate change. These calculations involve formulas and methods from the IPCCC guidelines, from guidance documents such as GFOI's Methodological Guidance Document (MGD), but increasingly also from several standards aiming at ensuring that carbon credits calculated through them have a higher integrity (TREES, Carbon Fund, VERRA, etc.). International organizations such as FAO, the UNREDD Programme or FCPF have provided financial and technical support to countries to develop National Forest Monitoring System following such standards. While technical capacity in-countries have raised significantly over the past 10 years, the aggregation of ground level and spatial data and their analysis into GHG emission reduction often remain done by international experts.
+
+These calculations can be performed with spreadsheets, programming languages (R, Python) or a combination of both. High level, or aggregated data, such as carbon stock per ha, areas of land use / land cover change can easily be processed with spreadsheets, but more detailed data are often more safely processed with programming languages. Introducing programming languages for data analysis can help countries reach full autonomy in their carbon accounting processes. With R and Rstudio, the amount of knowledge necessary to process raw data (not including spatial data, for which other tools such as SEPAL and Google Earth Engine exist) is relatively small, and enthusiastic learners can autonomously perform standard tasks and start exploring additional ways to get insight on their forestry data. In this context, UN-REDD TA in 2024 has envisioned capacity building training country programs in R for Vietnam, Lao PDR and Nepal with focus on R functions and commands for NFI data analysis, carbon accounting and uncertainty propagation. The R training is targeted for government officials working directly on carbon accounting, MRV and NFI data collection/analysis and are planned in series starting from Vietnam, Lao PDR and finally for Nepal. First basic training on R tools has been conducted successfully with 13 technical personnel from Forest Inventory and Planning Institute (FIPI), Hanoi, Vietnam for 3 full days from 6-8 March 2023. This training planned for Lao PDR will incorporate learnings from Vietnam training and will deliver technical insights into using programming in basic data analysis and visualization in R.
+
+In Lao PDR, the carbon accounting process is described in the below diagram (source: F-REDD, ER-P calculation steps):
+
+![REDD+ carbon accounting steps](assets/Carbon accounting steps LaoPDR.png){#fig-ca}
+
+R is already used in portions of the calculation steps, such as equations 1 to 3 (Emission Factors), while the aggregation of data is done with MS Excel (equations 4 to 7). The R based processes were developed by external companies for FIPD and transferring the knowledge is essential to empower Lao PDR own technical agencies. Two trainings were implemented in 2021 to introduce R to FIPD,
+
+but the NFI methodology has changed for the 4th cycle (implementation planned for 2024/2025) and the previous training were limited to basic R functions.
+
+## Objectives of the training {.unnumbered}
+
+The main objective of the training is to support FIPD to develop Lao PDR National Forest Inventory data analysis autonomously with R and Rstudio, as safe and powerful tools to process the necessary calculation chains from raw data to GHG emissions and removals factors for REDD+ carbon accounting. This training planned for 7 days will build on the earlier trainings through 2-day refresher course and 5-day in-depth modules covering theoretical and practical steps on carbon accounting process keeping in-line with the ERPD methodology of Lao PDR. The in-depth training is designed to support the next NFI cycle and will focus on NFI data analysis for tree level calculations, reproduce the calculations of forest average carbon stock and basic spatial data analysis/visualization techniques. At the end of the training, participants are expected:
+
+1.  Be able to understand and replicate carbon stocks calculations from NFI.
+
+2.  Visualize tree and spatial data with R.
+
+3.  Run a simple shiny application locally (optional).
+
+# Session 01 - training introduction
+
+## Welcoming remarks
+
+Welcoming remarks were provided by NAME, POSITION, who highlighted the importance of building FIPD capacity on data analysis to be able to process the National Forest Inventory data. FAO experts presented the main objective of the training, which is to calculate forest carbon stock based on the NFI 4th cycle test data, a set of 28 plots that were measured earlier in 2024.
+
+## Evaluation of participants initial level
+
+A Kahoot game was organized with 15 questions on basic R skills, including type of data and object, commands for making figures and loading packages. The participants answered correctly 38 % of the questions. This shows the refresher training was really useful to give basic concepts to the participants (some for the first time) but more practice is needed the remember and get used to the key functions.
+
+## Showcase: How R is used for REDD+ carbon accounting for REDD+
+
+The presentation focused on 5 strengths of R:
+
+1.  Fast
+
+2.  Reliable
+
+3.  Good graphs
+
+4.  Automatic reports
+
+5.  Dashboards
+
+Each strength was demonstrated with a different R project. The speed was showcased with running the NFI testing data in between timestamps recorders from the {tictoc} package. The whole calculation chain (loading data, a few visual checks, calculating biomass for live trees and deadwood, aggregation to plot, cluster and forest type) could run in less than 1 second.
+
+# Session 02 - Context: carbon accounting and Lao NFI 4th cycle design
+
+## Presentation on carbon accounting
+
+Presentation on the 4th NFI cycle by FIPD
+
+# Session 03 - play with data
+
+## Graph of tree position from the tree level data
+
+### Objective
+
+### Calculation steps
+
+### Code highlights
+
+### 
+
+## Map of plot and treeplot locations
+
+### Objective
+
+### Calculation steps
+
+### Code highlights
+
+# Session 04 - tree level calculations
+
+## Objective
+
+The objective of this script is:
+
+-   **Add aboveground biomass (AGB) in kg and in ton per ha for all live trees measured.**
+
+Expected output
+
+-   a tree level table `tree_agb` containing AGB for each live tree
+
+-   a graph of tree AGB (kg) vs DBH (cm)
+
+Additional considerations:
+
+-   AGB is not measured directly in the forest. It is calculated with allometric equations. In Lao PDR, for live trees, the equation is different for each land cover class (LC, coded `lc_class`).
+
+-   In the forest, LC class is not recorded for each tree but at the treeplot level.
+
+## Calculation steps
+
+1.  Load libraries. Key functions: `library()`.
+
+2.  Load data. Key functions: `read_csv()`.
+
+3.  Add AGB models. Key functions: `tibble()`, `rep()`.
+
+4.  Pass LC info from `treeplot` table to the `tree` table. Key functions: **`left`**`_join()`.
+
+5.  Calculate AGB with different equation parameters based on land cover class. Key functions: `mutate()`, `if_else()` and `case_when().`
+
+6.  Calculate the trees' scale factor and convert AGB to ton/ha. Key functions: `mutate()`, `if_else()`.
+
+7.  Make graphs and summary statistics. Key functions: `summary()`, `ggplot()`, `geom_point()`.
+
+## Code highlights
+
+### Joins with `left_join()`
+
+In this section we will join few tables to the `tree` table.
+
+For example, we want to connect the table `treeplot` to the table `tree` .
+
+First we need to find the column name(s) that both tables have in common. For that we can print the column names of both tables:
+
+```{r}
+names(tree_init)
+```
+
+### (optional) Make DBH classes with `case_when()`
+
+### Calculate aboveground biomass and scale factor with `mutate()` and `if_else()`
+
+### Visualize the results with `summary()` and `ggplot()`
+
+Tree AGB stats:
+
+```{r}
+#| echo: false
+summary(tree_agb$tree_agb)
+```
+
+Tree AGB visual checks
+
+```{r}
+#| echo: false
+#| fig-cap: 
+#| - "(A) Tree aboveground biomass (kg) against DBH (cm)." 
+#| - "(B) Tree aboveground biomass (t/ha) against tree basal area (m^2^/ha)."
+#| layout-ncol: 2
+#| 
+
+ggplot(tree_agb) +
+  geom_point(aes(x = tree_dbh, y = tree_agb, color = lc_class))
+
+ggplot(tree_agb) +
+  geom_point(aes(x = tree_ba_ha, y = tree_agb_ha, color = lc_class))
+```
+
+# Session 05 - Aggregate tree level biomass to treeplot, plot and forest type
+
+## Objective
+
+-   **Calculate the average forest carbon stock for each forest land cover.**
+
+Expected outputs:
+
+-   Tables `treeplot_agb`, `plot_agb` and `forest_agb` with at each level their carbon stock in ton C/ha.
+
+-   Histogram of forest carbon stock with confidence interval.
+
+Key considerations:
+
+-   The main sample unit of the NFI is the plot level.
+
+-   We need to calculate the sum of all the trees AGB in each treeplot (scale factor for treeplot level).
+
+-   We can add belowground biomass at treeplot level with a **root-to-shoot ratio (RS).**
+
+-   We can convert to carbon with the **carbon fraction (CF).**
+
+-   All treeplots do not have the same land cover. The main plot land cover is determined by majority rule (may need to be changed in the future).
+
+-   The forest type carbon is the average of all plots in the same land cover if the design is systematic and plot size is equal (assumed here but not true - i.e. majority rule).
+
+## **Calculation steps**
+
+1.  Load libraries
+2.  Load data
+3.  Aggregate to treeplot:
+    1.  aggregate the tree data to treeplot with `group_by()` and `summarise()`
+    2.  Add treeplot information with `left_join()`
+    3.  Calculate belowground biomass with `mutate()` and `case_when()`
+    4.  Calculate carbon with `mutate()`
+    5.  make a boxplot to check the intra-plot variability with `ggplot()` and `geom_boxplot()`
+4.  Aggregate to plot
+    1.  assign each treeplot the plot level land cover with `left_join()`
+    2.  Aggregate treeplot carbon with `group_by()` and `summarise()`
+5.  Aggregate to forest type:
+    1.  aggregate with `summarise()`
+    2.  Add confidence interval with `mutate()` and `qt()`
+    3.  Make a histogram with `ggplot()`, `geom_col()` and `geom_errorbar()`
+
+## **Code highlight**
+
+## 
