@@ -66,7 +66,7 @@ tree |>
 
 
 ## Change color based on nesting level
-gg <- tree |>
+gg_treemap <- tree |>
   filter(plot_no == 2) |>
   ggplot(aes(x = tree_distance, y = tree_azimuth)) +
   geom_point(aes(color = filename)) +
@@ -78,12 +78,12 @@ gg <- tree |>
     x = "", 
     y = "",
     color = "",
-    subtitle = "tree maps for plot 2"
+    subtitle = "tree map for plot 2"
   )
 
-print(gg)
+print(gg_treemap)
 ggsave(
-  gg, filename = "results/gg-treemap-plot02.png", 
+  gg_treemap, filename = "results/gg-treemap-plot02.png", 
   width = 15, height = 15, unit = "cm", dpi = 300
   )
 

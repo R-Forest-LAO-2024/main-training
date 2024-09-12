@@ -27,10 +27,10 @@ editor: visual
 #| echo: false
 #| output: false
 
-source("R/03-play-tree.R", local = TRUE)
-source("R/03-play-spatial.R", local = TRUE)
-source("R/04-calc-tree-agb-corr.R", local = TRUE)
-source("R/05-aggregate-carbon-corr.R", local = TRUE)
+source("R-training-NFI/03-play-tree.R", local = TRUE)
+source("R-training-NFI/03-play-spatial.R", local = TRUE)
+source("R-training-NFI/04-calc-tree-agb-corr.R", local = TRUE)
+source("R-training-NFI/05-aggregate-carbon-corr.R", local = TRUE)
 
 ```
 
@@ -44,7 +44,7 @@ These calculations can be performed with spreadsheets, programming languages (R,
 
 In Lao PDR, the carbon accounting process is described in the below diagram (source: F-REDD, ER-P calculation steps):
 
-![REDD+ carbon accounting steps](assets/Carbon accounting steps LaoPDR.png){#fig-ca}
+![REDD+ carbon accounting steps](assets/Carbon%20accounting%20steps%20LaoPDR.png){#fig-ca}
 
 R is already used in portions of the calculation steps, such as equations 1 to 3 (Emission Factors), while the aggregation of data is done with MS Excel (equations 4 to 7). The R based processes were developed by external companies for FIPD and transferring the knowledge is essential to empower Lao PDR own technical agencies. Two trainings were implemented in 2021 to introduce R to FIPD,
 
@@ -84,13 +84,43 @@ The presentation focused on 5 strengths of R:
 
 5.  Dashboards
 
-Each strength was demonstrated with a different R project. The speed was showcased with running the NFI testing data in between timestamps recorders from the {tictoc} package. The whole calculation chain (loading data, a few visual checks, calculating biomass for live trees and deadwood, aggregation to plot, cluster and forest type) could run in less than 1 second.
+gestionsinistre\@maif.fr F240115266T declaration
+
+### R is fast
+
+Each strength was demonstrated with a different R project. The speed was showcased with running the NFI testing data in between time stamps recorders from the {tictoc} package. The whole calculation chain (loading data, a few visual checks, calculating biomass for live trees and deadwood, aggregation to plot, cluster and forest type) could run in less than 1 second (for 18 plots, 86 subplots, 1037 live trees, 32 standing dead trees, 28 stumps).
+
+![Time record for processing Lao PDR test NFI survey from tree data to forest type carbon stock.](assets/R-showcase-fast.png){fig-align="center"}
+
+### R is reliable
+
+Reliability was showcased with an example that led to calculation error in the MS Excel draft spreadsheet. The IF() function in MS Excel silently passes the value for TRUE condition even if the condition refers to an empty cell. It can lead to error when, for example, the plot radius 8 or 16 is return based on tree DBH: `IF(DBH < 30, 8, 16)`. If the DBH column is empty (if the row records a stump, its diameter is in the stump_diam column instead of DBH), then 8 meter radius is assigned even if the stump diameter is bigger than 30 cm. R doesn't allow this behaviour with the native `ifelse()` or the tidyverse equivalent `if_else()`. Both functions return NA or an error if the condition is NA or a data type not compatible with the condition.
+
+## R makes nice graphs
+
+Thanks to the {ggplot2} package, R can produce complex and nice looking figures with few lines of code. During the training, barplots with error bars with error bars were produced as well as tree location maps.
+
+```{r}
+#| echo: false
+#| fig-cap: 
+#| - "(A) Forest carbon stock with uncertainty based on NFI cycle 4 test survey." 
+#| - "(B) Tree location map for treeplot "
+#| layout-ncol: 2
+
+
+## From R-training-NFI/03-play-tree.R
+print(gg_treemap)
+
+## From R-NFI/08-agg-ftype.R
+print(gg_carbon)
+
+```
 
 # Session 02 - Context: carbon accounting and Lao NFI 4th cycle design
 
 ## Presentation on carbon accounting
 
-Presentation on the 4th NFI cycle by FIPD
+## Presentation on the 4th NFI cycle by FIPD
 
 # Session 03 - play with data
 
@@ -183,7 +213,7 @@ Tree AGB visual checks
 #| - "(A) Tree aboveground biomass (kg) against DBH (cm)." 
 #| - "(B) Tree aboveground biomass (t/ha) against tree basal area (m^2^/ha)."
 #| layout-ncol: 2
-#| 
+#| width: "50%"
 
 ggplot(tree_agb) +
   geom_point(aes(x = tree_dbh, y = tree_agb, color = lc_class))

@@ -30,7 +30,7 @@ gg <- forest_carbon |>
     )
 print(gg)
 
-gg <- forest_carbon |>
+gg_carbon <- forest_carbon |>
   ggplot(aes(x = lc_class_plot)) +
   geom_col(aes(y = carbon_ag, fill = lc_class_plot)) +
   geom_errorbar(aes(ymin = carbon_ag_cilower, ymax = carbon_ag_ciupper), width = 0.4) +
@@ -40,4 +40,4 @@ gg <- forest_carbon |>
     x = "Forest type code",
     y = "Aboveground carbon (tC/ha)"
   )
-print(gg)
+print(gg_carbon)
