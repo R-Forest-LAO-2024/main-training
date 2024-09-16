@@ -84,8 +84,6 @@ The presentation focused on 5 strengths of R:
 
 5.  Dashboards
 
-gestionsinistre\@maif.fr F240115266T declaration
-
 ### R is fast
 
 Each strength was demonstrated with a different R project. The speed was showcased with running the NFI testing data in between time stamps recorders from the {tictoc} package. The whole calculation chain (loading data, a few visual checks, calculating biomass for live trees and deadwood, aggregation to plot, cluster and forest type) could run in less than 1 second (for 18 plots, 86 subplots, 1037 live trees, 32 standing dead trees, 28 stumps).
@@ -115,6 +113,34 @@ print(gg_treemap)
 print(gg_carbon)
 
 ```
+
+### R can make automatic reports
+
+Outside of R scripts (files with .R extension), Rstudio also support Rmarkdown documents (.Rmd files) and more recently Quarto documents (.qmd). These documents combine formatted text, style options and R code that runs and produces either the code and its outputs, the code only or the outputs only.
+
+Quarto documents can be rendered to various types of documents, such as MS Word, PDFs or websites. They can be used to generate automated reports that change outputs based on the data that is used within the same documents.
+
+With Rmarkdown, text formatting is done with symbols, for examples \# for header 1, \## for header 2, \*\*bold\*\* with be displayed **bold**, etc. With Quarto document, Rstudio offers a visual editor, so that text is already formatted.
+
+Quarto documents also offer a very complete set of options for document styling, including for example numbered sections, table of contents or figure captions, making Quarto documents suitable for reporting or scientific articles production.
+
+As of 2024, R scripts in Rstudio don't handle non-latin characters well and sentences in austro-asiatic languages often results in misplacement of the cursor. A current "hack" to circumvent this issue is to work with [Quarto documents]{.underline} rather than R scripts.
+
+### Dashboards
+
+Quarto documents create static files that render R code written in advance. R and Rstudio also contain the archictecture to develop and run interactive dashboards with the package {shiny} and others. With {shiny}, the dashboards (or shiny apps) can also be static, based on pore-existing data analysis, but can also be interactive, with the outputs (texts, graphs or maps) responding to user input. The inputs are usually filtering tools such as drop down lists or sliders, but can also be documents to upload or methods to select.
+
+In the following example, which the default basic shiny app when starting a new application, users can select how large the histogram bar width should be.
+
+::: {#fig-showcase}
+![With 30 bins](assets/R-showcase-db1.png)
+
+![With 10 bins](assets/R-showcase-db2.png)
+
+Base R shiny application with 2 different user's inputs.
+:::
+
+NFI related apps were presented, from a simple apps that shows a map with NFI locations and forest types to a more advanced app, [oNFI](https://github.com/gaelso/oNFI), that can propose optimized forest inventory plot designs and sample size based on a range of user inputs split in several tabs.
 
 # Session 02 - Context: carbon accounting and Lao NFI 4th cycle design
 
